@@ -36,3 +36,17 @@ class CategoryAttribute(models.Model):
         verbose_name = ('category attribute')
         verbose_name_plural = ('category attributes')
 
+class Product(models.Model):
+    category_id = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL,null = True)
+    manufacturer_id = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL,null = True)
+    title = models.CharField(verbose_name= "full product name",max_length=255,unique = True)
+    release_date = models.DateField(verbose_name= "product release date")
+    price = models.DecimalField(max_digits=15,decimal_places=2,verbose_name = "product price")
+    summary = models.TextField(verbose_name = "summary of the product")
+    discount = models.DecimalField(max_digits=3,decimal_places=1,verbose_name = "product discount")
+    amount = models.PositiveIntegerField()
+    rate = models.DecimalField(max_digits=3,decimal_places=1,verbose_name = "product rate")
+    slug = models.CharField(verbose_name = "slug for product",max_length = 255, unique = True)
+    class Meta:
+        verbose_name = ('product')
+        verbose_name_plural = ('prodcuts')
