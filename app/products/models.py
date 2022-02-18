@@ -29,3 +29,10 @@ class ProductCategory(models.Model):
     def __str__():
         return f"Product category:{name}"
 
+class CategoryAttribute(models.Model):
+    category_id = models.ForeignKey(ProductCategory,on_delete=models.CASCADE)
+    attribute_id = models.ForeignKey(Attribute,on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = ('category attribute')
+        verbose_name_plural = ('category attributes')
+
