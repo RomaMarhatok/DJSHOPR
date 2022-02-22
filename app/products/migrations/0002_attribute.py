@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, verbose_name='full attribute name')),
                 ('value', models.CharField(max_length=255, verbose_name='value of attribute')),
-                ('slug', models.CharField(max_length=255, verbose_name='slug for attribute:<django.db.models.fields.CharField>')),
+                ('slug', models.CharField(max_length=255, verbose_name='slug for attribute')),
             ],
             options={
                 'verbose_name': 'attribute',

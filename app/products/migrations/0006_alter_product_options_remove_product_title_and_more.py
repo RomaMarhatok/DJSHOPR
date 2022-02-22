@@ -27,12 +27,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='attribute',
             name='slug',
-            field=models.SlugField(unique=True, verbose_name='slug for attribute:<django.db.models.fields.CharField>'),
+            field=models.SlugField(unique=True, verbose_name='slug for attribute'),
         ),
         migrations.AlterField(
             model_name='manufacturer',
             name='slug',
-            field=models.SlugField(unique=True, verbose_name='slug for manufacturer:<django.db.models.fields.CharField>'),
+            field=models.SlugField(unique=True, verbose_name='slug for manufacturer'),
         ),
         migrations.AlterField(
             model_name='product',

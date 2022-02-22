@@ -14,12 +14,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='product',
             name='discount',
-            field=models.DecimalField(blank=True, decimal_places=0, max_digits=3, validators=[django.core.validators.MinValueValidator(0.0)]),
+            field=models.DecimalField(blank=True, decimal_places=0, max_digits=3),
         ),
         migrations.AlterField(
             model_name='product',
             name='price',
-            field=models.DecimalField(decimal_places=2, max_digits=15, validators=[django.core.validators.MinValueValidator(0.0)], verbose_name='product price'),
+            field=models.DecimalField(decimal_places=2, max_digits=15,verbose_name='product price'),
         ),
         migrations.AlterField(
             model_name='product',
