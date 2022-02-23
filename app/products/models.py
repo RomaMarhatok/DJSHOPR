@@ -9,7 +9,7 @@ class Manufacturer(models.Model):
         verbose_name_plural = ("manufacturers")
         db_table = 'manufacturer'
     def __str__(self)->str:
-        return f"manufacturer:{self.name}"
+        return self.name
 
 class Attribute(models.Model):
     name = models.CharField(verbose_name = "full attribute name",max_length=255)
@@ -19,7 +19,7 @@ class Attribute(models.Model):
         verbose_name_plural = ("attributes")
         db_table = ('attribute')
     def __str__(self)->str:
-        return f"attribute:{self.name}"
+        return self.name
 
 class ProductCategory(models.Model):
     name = models.CharField(verbose_name = "full category name", max_length=255)
@@ -29,10 +29,10 @@ class ProductCategory(models.Model):
         verbose_name_plural = ('product category names')
         db_table = ('product_category')
     def __str__(self)->str:
-        return f"Product category:{self.name}"
+        return self.name
 class Product(models.Model):
-    category_id = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL,null = True)
-    manufacturer_id = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL,null = True)
+    category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL,null = True)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL,null = True)
     name = models.CharField(verbose_name = "full product name",max_length=255,unique = True)
     release_date = models.DateField(verbose_name = "product release date",null=True)
     price = models.DecimalField(max_digits=15,decimal_places=2,verbose_name = "product price")
@@ -46,10 +46,10 @@ class Product(models.Model):
         verbose_name_plural = ('prodcuts')
         db_table = ('product')
     def __str__(self) -> str:
-        return f'product {self.name}'
+        return self.name
 class ProductAttribute(models.Model):
-    product_id = models.ForeignKey(Product,on_delete=models.CASCADE)
-    attribute_id = models.ForeignKey(Attribute,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    attribute = models.ForeignKey(Attribute,on_delete=models.CASCADE)
     attribute_value = models.CharField(verbose_name="atribute value",max_length=255)
     class Meta:
         verbose_name = ('product attribute')
