@@ -1,0 +1,56 @@
+{% extends 'products/base.html' %}
+
+{% block title %}{{page_name}}{% endblock title %}
+
+{% block content %}
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="filter-bar">
+                <form action="{% url 'index' %}" method="post">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button type="submit" class="btn btn-primary">search</button>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+           <div class="products-block container mt-2 mb-2">
+                <!-- <nav class="category-block mb-2">
+                    <div class="row">
+                        {% for category in  categories %}
+                        <a href="{{ categories.get_absolute_url }}" class="col btn btn-primary">{{category.name}}</a>
+                        {% endfor%}
+                    </div>
+                </nav> -->
+                <div class="list-products-block pb-2 mx-auto">
+                    <div class="row row-cols-3">
+                        {% for product in products %}
+                        <div class="card ms-2 mb-2" style="width: 19rem;">
+                            <img class="card-img-top" src="..." alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">{{product.category|title}} {{product.name}}</h5>
+                                <p class="card-text">{{product.summary}}</p>
+                                <p>Price:{{product.price}}$</p>
+                                <a href="{{ product.get_absolute_url }}" class="btn btn-primary">more</a>
+                            </div>
+                        </div>
+                    {% endfor products %}
+                    </div>
+                </div>
+                <div class="pagination-block ms-2 mt-2">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
