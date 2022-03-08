@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.db import models
+from django.utils.text import slugify
 from django.core.validators import MinValueValidator,MaxValueValidator
 # Create your models here.
 class Manufacturer(models.Model):
@@ -11,6 +12,9 @@ class Manufacturer(models.Model):
         db_table = 'manufacturer'
     def __str__(self)->str:
         return self.name
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
+
 
 class Attribute(models.Model):
     name = models.CharField(verbose_name = "full attribute name",max_length=255)
@@ -21,6 +25,8 @@ class Attribute(models.Model):
         db_table = ('attribute')
     def __str__(self)->str:
         return self.name
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
 
 class ProductCategory(models.Model):
     name = models.CharField(verbose_name = "full category name", max_length=255)
@@ -53,6 +59,8 @@ class Product(models.Model):
         return reverse('product_view',kwargs={'product_slug':self.slug})
     def __str__(self) -> str:
         return self.name
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
 class ProductAttribute(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     attribute = models.ForeignKey(Attribute,on_delete=models.CASCADE)
