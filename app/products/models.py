@@ -14,6 +14,7 @@ class Manufacturer(models.Model):
         return self.name
     def save(self,*args,**kwargs):
         self.slug = slugify(self.name)
+        super(Manufacturer).save(*args,**kwargs)
 
 
 class Attribute(models.Model):
@@ -27,6 +28,7 @@ class Attribute(models.Model):
         return self.name
     def save(self,*args,**kwargs):
         self.slug = slugify(self.name)
+        super(Attribute).save(*args,**kwargs)
 
 class ProductCategory(models.Model):
     name = models.CharField(verbose_name = "full category name", max_length=255)
@@ -39,6 +41,9 @@ class ProductCategory(models.Model):
         return reverse('category_view',kwargs={'category_slug':self.slug})
     def __str__(self)->str:
         return self.name
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.name)
+        super(ProductCategory).save(*args,**kwargs)
 class Product(models.Model):
     category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL,null = True)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL,null = True)
@@ -61,6 +66,7 @@ class Product(models.Model):
         return self.name
     def save(self,*args,**kwargs):
         self.slug = slugify(self.name)
+        super(Product).save(*args,**kwargs)
 class ProductAttribute(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     attribute = models.ForeignKey(Attribute,on_delete=models.CASCADE)
