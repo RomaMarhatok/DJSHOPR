@@ -49,3 +49,14 @@ class ProductFilterForm(forms.Form):
             if order_by == name and order_by != "-":
                 return name
         return None
+
+
+class ProductCreateForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = [f.name for f in Product._meta.get_fields() if f.name!="slug"][1:]
+
+class ProductUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = [f.name for f in Product._meta.get_fields() if f.name!="slug"][1:]

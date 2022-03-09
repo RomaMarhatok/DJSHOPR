@@ -1,15 +1,10 @@
-from itertools import product
-from multiprocessing.sharedctypes import Value
-from pyexpat import model
+from django.core.paginator import Paginator
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.shortcuts import render, redirect
-from django.urls import reverse
 from typing import Dict, Any
 from products.models import Product, ProductCategory
 from django.db.models import Q
-from products.forms import ProductFilterForm
-# Create your views here.
-
+from products.forms import ProductFilterForm,ProductCreateForm, ProductUpdateForm
 
 class FilterIndexView():
     def filter_product(self, attr_dict, model):
@@ -22,6 +17,10 @@ class FilterIndexView():
         elif self.is_tuple_in_dict(('max_price', 'min_price'), filtered_dict):
             product_query_set = model.objects.filter(
                 price__lte=filtered_dict['max_price'], price__gte=filtered_dict['min_price'])
+        elif 'max_price' in filtered_dict:
+            product_query_set = model.objects.filter(price__lte=filtered_dict['max_price'])
+        elif 'min_price' in filtered_dict:
+            product_query_set = model.objects.filter(price__gte=filtered_dict['min_price'])
         elif 'category' in filtered_dict:
             product_query_set = model.objects.filter(
                 category=filtered_dict['category'])
@@ -48,15 +47,12 @@ class IndexListView(ListView, FilterIndexView):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class
         return context
-
-    def get(self, request, *args, **kwargs):
+    def get_queryset(self):
         attr_dict = dict(list(self.request.GET.items())[1:])
         form = self.form_class(attr_dict)
         if form.is_valid():
             products = self.filter_product(form.cleaned_data, self.model)
-            return render(request, 'products/index.html', context={'products': products, 'form': self.form_class})
-
-
+            return products
 class ProductDetailView(DetailView):
     model = Product
     context_object_name = 'product'
@@ -65,14 +61,19 @@ class ProductDetailView(DetailView):
 
 
 class PorductCreateView(CreateView):
-    model = Product
-    fields = [f.name for f in Product._meta.get_fields()][1:]
+    form_class = ProductCreateForm
     template_name = "products/create.html"
-    extra_content = {'value': 'create'}
+    def get(self,request,*args,**kwargs):
+        context = {'form': self.form_class(),'value': 'create'}
+        return render(request=request,template_name=self.template_name,context=context)
+
 
 
 class ProductUpdateView(UpdateView):
-    model = Product
-    fields = [f.name for f in Product._meta.get_fields()][1:]
-    template_name = "products/create.html"
-    extra_content = {'value': 'update'}
+    model=Product
+    form_class = ProductUpdateForm
+    template_name = "products/update.html"
+    slug_url_kwarg = 'product_slug'
+    def get(self,request,*args,**kwargs):
+        context = {'form': self.form_class(),'value': 'update'}
+        return render(request=request,template_name=self.template_name,context=context)
