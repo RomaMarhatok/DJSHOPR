@@ -1,0 +1,14 @@
+{% extends 'products/base.html' %}
+{% block title %}{{page_name}}{% endblock title %}
+{% block content %}
+<div class="container-md-5">
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <div>{{product.manufacturer}} {{product.name}}</div>
+        <div>{{product.summary}}</div>
+        <div>{{product.rate}}</div>
+        <div>{{product.price}}</div>
+    </div>
+    <a href="{% url 'index' %}" class="btn btn-primary">Back</a>
+</div>
+    
+{% endblock content %}
