@@ -18,7 +18,3 @@ RUN pip install -U pip \
     && poetry install
 
 COPY entrypoint.sh app ./
-
-RUN chmod +x entrypoint.sh
-
-ENTRYPOINT ["/code/entrypoint.sh"]
