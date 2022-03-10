@@ -1,8 +1,7 @@
-from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from typing import Dict, Any
-from products.models import Product, ProductCategory
+from products.models import Product
 from django.db.models import Q
 from products.forms import ProductFilterForm,ProductCreateForm, ProductUpdateForm
 
@@ -37,7 +36,7 @@ class FilterIndexView():
 
 
 class IndexListView(ListView, FilterIndexView):
-    paginate_by = 2
+    paginate_by = 5
     model = Product
     template_name = "products/index.html"
     context_object_name = "products"

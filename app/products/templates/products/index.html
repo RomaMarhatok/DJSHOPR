@@ -16,18 +16,15 @@
         </div>
         <div class="col">
            <div class="products-block container mt-2 mb-2">
-                <!-- <nav class="category-block mb-2">
-                    <div class="row">
-                        {% for category in  categories %}
-                        <a href="{{ categories.get_absolute_url }}" class="col btn btn-primary">{{category.name}}</a>
-                        {% endfor%}
-                    </div>
-                </nav> -->
                 <div class="list-products-block pb-2 mx-auto">
                     <div class="row row-cols-3">
                         {% for product in products %}
                         <div class="card ms-2 mb-2" style="width: 19rem;">
-                            <img class="card-img-top" src="..." alt="Card image cap">
+                            {% if product.image %}
+                                <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+                            {% else %}
+                                <img class="card-img-top" src="..." alt="Card image cap">
+                            {%endif%}
                             <div class="card-body">
                                 <h5 class="card-title">{{product.category|title}} {{product.name}}</h5>
                                 <p class="card-text">{{product.summary}}</p>

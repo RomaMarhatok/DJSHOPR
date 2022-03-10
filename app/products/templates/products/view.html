@@ -3,12 +3,20 @@
 {% block content %}
 <div class="container-md-5">
     <div class="position-absolute top-50 start-50 translate-middle">
-        <div>{{product.manufacturer}} {{product.name}}</div>
-        <div>{{product.summary}}</div>
-        <div>{{product.rate}}</div>
-        <div>{{product.price}}</div>
+        <div style="width: 30em;">
+            <div>
+            {% if product.image %}
+                <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+            {% else %}
+                <img class="card-img-top" src="..." alt="Card image cap">
+            {%endif%}</div>
+            <p>{{product.manufacturer}} {{product.name}}</p>
+            <p>{{product.summary}}</p>
+            <p>{{product.rate}}</p>
+            <p>{{product.price}}</p>
+        </div>
+        <a href="{% url 'index' %}" class="btn btn-primary">Back</a>
     </div>
-    <a href="{% url 'index' %}" class="btn btn-primary">Back</a>
 </div>
     
 {% endblock content %}
