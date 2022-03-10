@@ -15,7 +15,7 @@ services:
   django_app:
     build: .
     volumes:
-      - .:/django
+      - ./app/media:/code/media
     container_name: django_app
     ports:
       - "8000:8000"
