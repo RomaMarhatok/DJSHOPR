@@ -37,7 +37,7 @@ class FilterIndexView():
 
 
 class IndexListView(ListView, FilterIndexView):
-    paginate_by = 2
+    paginate_by = 5
     model = Product
     template_name = "products/index.html"
     context_object_name = "products"

@@ -44,6 +44,9 @@ class ProductCategory(models.Model):
     def save(self,*args,**kwargs):
         self.slug = slugify(self.name)
         super(ProductCategory,self).save(*args,**kwargs)
+
+def content_product_file_path(instance,filename):
+    return "/".join(['products',instance.name,'%Y','%m','%d',filename])
 class Product(models.Model):
     category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL,null = True)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL,null = True)
@@ -55,6 +58,7 @@ class Product(models.Model):
     amount = models.PositiveIntegerField(verbose_name="product amount")
     rate = models.FloatField(validators=[MinValueValidator(0.0),MaxValueValidator(100.0)],verbose_name = "product rate")
     slug = models.SlugField(verbose_name = "slug for product",max_length = 50, unique = True)
+    image = models.ImageField(upload_to = content_product_file_path,null=True,blank = True)
     class Meta:
         verbose_name = ('product')
         verbose_name_plural = ('prodcuts')
