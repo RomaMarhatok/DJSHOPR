@@ -1,0 +1,15 @@
+{% extends 'products/base.html' %}
+{% block content %}
+<form method="post" action="">{% csrf_token %}
+    <div>
+        {% if product.image %}
+            <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap" style="width: 18em;">
+        {% else %}
+            <img class="card-img-top" src="..." alt="Card image cap" style="width: 18em;">
+        {%endif%}
+        <p>Do you want to delete product {{product.name}}</p>
+    </div>
+    <input type="submit" value="{{value}}">
+    <a href="{% url 'index' %}" class="btn btn-primary">Back</a>
+</form>
+{% endblock content %}

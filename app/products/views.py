@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from audioop import reverse
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, DetailView, CreateView, UpdateView,DeleteView
 from typing import Dict, Any
 from products.models import Product
 from django.db.models import Q
@@ -62,10 +64,11 @@ class ProductDetailView(DetailView):
 class PorductCreateView(CreateView):
     form_class = ProductCreateForm
     template_name = "products/create.html"
-    def get(self,request,*args,**kwargs):
-        context = {'form': self.form_class(),'value': 'create'}
-        return render(request=request,template_name=self.template_name,context=context)
+    extra_context = {'value':'create'}
 
+    def get_object(self):
+        slug_ = self.kwargs.get('product_slug')
+        return get_object_or_404(Product,slug = slug_)
 
 
 class ProductUpdateView(UpdateView):
@@ -73,6 +76,24 @@ class ProductUpdateView(UpdateView):
     form_class = ProductUpdateForm
     template_name = "products/update.html"
     slug_url_kwarg = 'product_slug'
-    def get(self,request,*args,**kwargs):
-        context = {'form': self.form_class(),'value': 'update'}
-        return render(request=request,template_name=self.template_name,context=context)
+    extra_context = {'value':'update'}
+
+    def get_object(self):
+        slug_ = self.kwargs.get('product_slug')
+        return get_object_or_404(Product,slug = slug_)
+
+    def get_success_url(self) -> str:
+        return reverse('index')
+
+class ProductDeleteView(DeleteView):
+    template_name = "products/delete.html"
+    context_object_name = "product"
+    slug_url_kwarg = 'product_slug'
+    extra_context = {'value':'delete'}
+
+    def get_object(self):
+        slug_ = self.kwargs.get('product_slug')
+        return get_object_or_404(Product,slug = slug_)
+
+    def get_success_url(self) -> str:
+        return reverse('index')
