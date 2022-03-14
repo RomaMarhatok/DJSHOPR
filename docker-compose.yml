@@ -6,6 +6,9 @@ services:
     build: .
     command: celery -A app worker -l INFO
     environment:
+      - POSTGRES_DB=${POSTGRES_DB:?err}
+      - POSTGRES_USER=${POSTGRES_USER:?err}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?err}
       - BROKER_URL=${BROKER_URL:?err}
       - BACKEND_URL=${BACKEND_URL:?err}
       - REDIS_PASSWORD=${REDIS_PASSWORD:?err}
