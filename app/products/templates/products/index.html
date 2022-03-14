@@ -20,8 +20,8 @@
                     <div class="row row-cols-3">
                         {% for product in products %}
                         <div class="card ms-2 mb-2" style="width: 19rem;">
-                            {% if product.image %}
-                                <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+                            {% if product.image_url %}
+                                <img class="card-img-top" src="{{product.image_url}}" alt="Card image cap">
                             {% else %}
                                 <img class="card-img-top" src="..." alt="Card image cap">
                             {%endif%}
@@ -29,7 +29,7 @@
                                 <h5 class="card-title">{{product.category|title}} {{product.name}}</h5>
                                 <p class="card-text">{{product.summary}}</p>
                                 <p>Price:{{product.price}}$</p>
-                                <a href="{{ product.get_absolute_url }}" class="btn btn-primary">more</a>
+                                <a href="{{ product.absolute_url }}" class="btn btn-primary">more</a>
                             </div>
                         </div>
                     {% endfor products %}

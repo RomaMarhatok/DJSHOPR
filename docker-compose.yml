@@ -1,6 +1,39 @@
 version: "3.9"
 
 services:
+
+  celery:
+    build: .
+    command: celery -A app worker -l INFO
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:?err}
+      - POSTGRES_USER=${POSTGRES_USER:?err}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?err}
+      - BROKER_URL=${BROKER_URL:?err}
+      - BACKEND_URL=${BACKEND_URL:?err}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:?err}
+    depends_on:
+        - django_app
+        - redis
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER:?err}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS:?err}
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./data:/data/redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:?err}
+    container_name: redis
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass ${REDIS_PASSWORD:?err}
   postgres_db:
     image: postgres
     volumes:
@@ -14,6 +47,7 @@ services:
     container_name: postgres_db
   django_app:
     build: .
+    command: uvicorn app.asgi:application --reload --port 8000 --host 0.0.0.0
     volumes:
       - ./app/media:/code/media
     container_name: django_app
@@ -23,5 +57,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:?err}
       - POSTGRES_USER=${POSTGRES_USER:?err}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?err}
+      - BROKER_URL=${BROKER_URL:?err}
+      - BACKEND_URL=${BACKEND_URL:?err}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:?err}
     depends_on:
       - postgres_db

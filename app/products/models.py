@@ -44,6 +44,13 @@ class ProductCategory(models.Model):
     def save(self,*args,**kwargs):
         self.slug = slugify(self.name)
         super(ProductCategory,self).save(*args,**kwargs)
+    def to_dict(self):
+        data={
+            'id':self.pk,
+            'name':str(self.name),
+            'slug':self.slug
+        }
+        return data
 
 def content_product_file_path(instance,filename):
     return "/".join(['products',instance.name,'%Y','%m','%d',filename])
@@ -71,6 +78,25 @@ class Product(models.Model):
     def save(self,*args,**kwargs):
         self.slug = slugify(self.name)
         super(Product,self).save(*args,**kwargs)
+    
+    def __validate_path_image(self):
+        try:
+            photo_url = self.image.url
+            return photo_url
+        except ValueError:
+            return ""
+
+    def to_dict(self):
+        data = {
+            'id':self.pk,
+            'category':str(self.category),
+            'name':self.name,
+            'summary':self.summary,
+            'price':str(self.price),
+            'absolute_url':self.get_absolute_url(),
+            'image_url':self.__validate_path_image()
+        }
+        return data
 class ProductAttribute(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     attribute = models.ForeignKey(Attribute,on_delete=models.CASCADE)

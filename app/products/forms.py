@@ -40,7 +40,7 @@ class ProductFilterForm(forms.Form):
         if len(query_set_catetory) == 0:
             category_name = None
         else:
-            category_name = query_set_catetory[0]
+            category_name = query_set_catetory[0].pk
         return category_name
 
     def clean_order_by(self):
