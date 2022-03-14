@@ -1,4 +1,11 @@
+#flake8
+.flake8
+#data
+./data
+./data/.
 data/db/.
+data/redis/.
+data/.
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
