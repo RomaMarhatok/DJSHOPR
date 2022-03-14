@@ -1,0 +1,12 @@
+{
+    "include": [
+      "app/",
+    ],
+    "ignore": [
+      "data/*"
+    ],
+    "pythonVersion": "3.9",
+    "pythonPlatform": "All",
+    "useLibraryCodeForTypes": true
+  }
+  

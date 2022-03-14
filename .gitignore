@@ -1,4 +1,7 @@
-data/db/.
+#flake8
+.flake8
+#data
+./data
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
