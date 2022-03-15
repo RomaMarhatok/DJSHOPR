@@ -54,9 +54,9 @@ class ProductFilterForm(forms.Form):
 class ProductCreateForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = [f.name for f in Product._meta.get_fields() if f.name!="slug"][1:]
+        fields = [f.name for f in Product._meta.get_fields() if f.name!="slug"][2:]
 
 class ProductUpdateForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = [f.name for f in Product._meta.get_fields() if f.name!="slug"][1:]
+        fields = [f.name for f in Product._meta.get_fields() if f.name!="slug"][2:]
