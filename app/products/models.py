@@ -80,11 +80,13 @@ class Product(models.Model):
         super(Product,self).save(*args,**kwargs)
     
     def __validate_path_image(self):
+        photo_url = None
         try:
             photo_url = self.image.url
             return photo_url
         except ValueError:
-            return ""
+            photo_url = ""
+        return photo_url
 
     def to_dict(self):
         data = {
