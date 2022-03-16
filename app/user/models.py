@@ -1,15 +1,19 @@
 from django.db import models
-from django.core.validators import MinValueValidator,MaxValueValidator
+from django.core.validators import MinValueValidator
+from django.contrib.auth.hashers import Argon2PasswordHasher, BasePasswordHasher
 class User(models.Model):
-    login = models.CharField(verbose_name = "user login",max_length = 255)
-    password = models.CharField(verbose_name = "user password",max_length = 255)
-    username = models.CharField(verbose_name = "user name",max_length = 255)
+    login = models.CharField(verbose_name = "user login",max_length = 255,unique=True)
+    password = models.CharField(verbose_name = "user password",max_length = 255,unique=True)
+    username = models.CharField(verbose_name = "user name",max_length = 255,unique=True)
 
     class Meta:
         verbose_name = ('user')
         verbose_name_plural = ('users')
         db_table = ('user')
-
+    
+    def save(self,*args,**kwargs):
+        self.password = Argon2PasswordHasher().encode(self.password,BasePasswordHasher().salt())
+        super(User,self).save(*args,**kwargs)
 class Basket(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
 
