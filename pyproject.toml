@@ -12,6 +12,7 @@ psycopg2-binary = "^2.9.3"
 celery = "^5.2.3"
 Pillow = "^9.0.1"
 redis = "^4.1.4"
+argon2-cffi = "^21.3.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
