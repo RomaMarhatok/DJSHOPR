@@ -83,7 +83,6 @@ class Product(models.Model):
         photo_url = None
         try:
             photo_url = self.image.url
-            return photo_url
         except ValueError:
             photo_url = ""
         return photo_url
