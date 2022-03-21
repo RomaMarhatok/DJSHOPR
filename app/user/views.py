@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
@@ -6,10 +5,9 @@ from django.views.generic import ListView
 from user.forms import RegistrationForm, SingInForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from user.models import BasketProduct,Basket
+from user.models import BasketProduct, Basket
 from products.models import Product
-from django.contrib.auth import logout,login
-# from django.contrib.auth.validator
+from django.contrib.auth import logout, login
 
 
 class RegistrationView(View):
@@ -42,11 +40,12 @@ class SingInView(LoginView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['form'] = self.form_class
+        context_data["form"] = self.form_class
         return context_data
-    
+
     def get_success_url(self) -> str:
-        return reverse_lazy('index')
+        return reverse_lazy("index")
+
 
 class BasketListView(ListView):
     template_name = "user/basket.html"
@@ -54,14 +53,17 @@ class BasketListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        user_pk = User.objects.filter(username = self.request.user)[0].pk
+        user_pk = User.objects.filter(username=self.request.user)[0].pk
         basket = Basket.objects.filter(user__id=user_pk)
-        basketproducts_queryset = BasketProduct.objects.filter(basket__id = basket[0].pk)
-        products_name = [basketproduct.product for basketproduct in basketproducts_queryset ]
+        basketproducts_queryset = BasketProduct.objects.filter(basket__id=basket[0].pk)
+        products_name = [
+            basketproduct.product for basketproduct in basketproducts_queryset
+        ]
         products_name
         product_queryset = Product.objects.filter(name__in=products_name)
         return product_queryset
 
+
 def logout_user(request):
     logout(request)
-    return redirect('sign_in')
+    return redirect("sign_in")
