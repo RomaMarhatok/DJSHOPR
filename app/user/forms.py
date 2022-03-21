@@ -111,14 +111,18 @@ class SingInForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password")
-    
-    def clean(self) :
-        cd = super(SingInForm,self).clean()
-        print(cd)
-        form_password = cd.get("password",None)
-        user_password_dict = User.objects.filter(username=cd.get('username',None)).values('password').get()
-        is_correct = Argon2PasswordHasher().verify(form_password,user_password_dict['password'])
+
+    def clean(self):
+        cd = super(SingInForm, self).clean()
+        form_password = cd.get("password", None)
+        user_password_dict = (
+            User.objects.filter(username=cd.get("username", None))
+            .values("password")
+            .get()
+        )
+        is_correct = Argon2PasswordHasher().verify(
+            form_password, user_password_dict["password"]
+        )
         if not is_correct:
             raise forms.ValidationError("password don't match")
         return cd
-        
