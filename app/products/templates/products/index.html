@@ -6,12 +6,34 @@
 <div class="container-fluid mt-2">
     <div class="row">
         <div class="col-sm-3">
-            <div class="filter-bar">
-                <form action="{% url 'index' %}" method="get">
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    <button type="submit" class="btn btn-primary">search</button>
-                </form>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="text-center">
+                                        <a class="btn btn-primary" href="{% url 'basket' %}">Basket</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="text-center">
+                                        <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="filter-bar">
+                                <form action="{% url 'index' %}" method="get">
+                                    {% csrf_token %}
+                                    {{form.as_p}}
+                                    <button type="submit" class="btn btn-primary">search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col">
@@ -32,7 +54,7 @@
                                 <a href="{{ product.absolute_url }}" class="btn btn-primary">more</a>
                             </div>
                         </div>
-                    {% endfor products %}
+                        {% endfor products %}
                     </div>
                 </div>
                 <div class="pagination-block ms-2 mt-2">
