@@ -1,7 +1,9 @@
+from typing import Any
+from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView,DeleteView
 from user.forms import RegistrationForm, SingInForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -51,7 +53,6 @@ class BasketListView(ListView):
     template_name = "user/basket.html"
     model = BasketProduct
     context_object_name = "products"
-
     def get_queryset(self):
         if self.request.user.is_authenticated:
             basket_pk = Basket.objects.get(user__id=self.request.user.pk).pk
@@ -68,12 +69,18 @@ class BasketListView(ListView):
 def logout_user(request):
     logout(request)
     return redirect("sign_in")
+class BasketView(View):
+    def post(self,request):
+        prod_name = self.request.POST.get("product_name",None)
+        if self.request.user.is_authenticated:
+            basket = Basket.objects.get(user__id=self.request.user.pk)
+            product = Product.objects.get(name=prod_name)
+            BasketProduct.objects.get_or_create(basket = basket,product = product)
+            return redirect('basket')
 
-def add_product_in_basket(request):
-    prod_name = request.POST.get("product_name",None)
-    if request.user.is_authenticated:
+def delete_product_from_basket(request,product_slug):
+    if request.user.is_authenticated and request.POST:
         basket = Basket.objects.get(user__id=request.user.pk)
-        product = Product.objects.get(name=prod_name)
-        BasketProduct.objects.create(basket = basket,product = product)
+        BasketProduct.objects.filter(basket=basket,product__slug=product_slug).delete()
         return redirect('basket')
         

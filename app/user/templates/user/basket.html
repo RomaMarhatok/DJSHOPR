@@ -1,3 +1,4 @@
+{% extends 'products/base.html' %}
 {% block content%}
 <section class="vh-100">
     <div class="container h-100">
@@ -8,7 +9,6 @@
               <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                   {% for product in products %}
-                  <form>
                     <div class="card ms-2 mb-2" style="width: 19rem;">
                       {% if product.image_url %}
                           <img class="card-img-top" src="{{product.image_url}}" alt="Card image cap">
@@ -19,11 +19,14 @@
                           <h5 class="card-title">{{product.category|title}} {{product.name}}</h5>
                           <p class="card-text">{{product.summary}}</p>
                           <p>Price:{{product.price}}$</p>
-                          <button class="btn btn-primary">delete</button>
+                          <form action="{% url 'delete_product_from_basket' product.slug %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">delete</button>
+                          </form>
+                          <a href="{{ product.get_absolute_url }}" class="btn btn-info">more</a>
                       </div>
                     </div>
-                  </form>
-                      
+
                   {% endfor %}
                 </div>
               </div>
