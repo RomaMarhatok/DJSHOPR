@@ -53,17 +53,27 @@ class BasketListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        user_pk = User.objects.filter(username=self.request.user)[0].pk
-        basket = Basket.objects.filter(user__id=user_pk)
-        basketproducts_queryset = BasketProduct.objects.filter(basket__id=basket[0].pk)
-        products_name = [
-            basketproduct.product for basketproduct in basketproducts_queryset
-        ]
-        products_name
-        product_queryset = Product.objects.filter(name__in=products_name)
-        return product_queryset
+        if self.request.user.is_authenticated:
+            basket_pk = Basket.objects.get(user__id=self.request.user.pk).pk
+            basketproducts_queryset = BasketProduct.objects.filter(basket__id=basket_pk)
+            products_name = [
+                basketproduct.product for basketproduct in basketproducts_queryset
+            ]
+            product_queryset = Product.objects.filter(name__in=products_name)
+            return product_queryset
+        else:
+            return redirect('sign_in')
 
 
 def logout_user(request):
     logout(request)
     return redirect("sign_in")
+
+def add_product_in_basket(request):
+    prod_name = request.POST.get("product_name",None)
+    if request.user.is_authenticated:
+        basket = Basket.objects.get(user__id=request.user.pk)
+        product = Product.objects.get(name=prod_name)
+        BasketProduct.objects.create(basket = basket,product = product)
+        return redirect('basket')
+        

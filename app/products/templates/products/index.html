@@ -1,5 +1,6 @@
 {% extends 'products/base.html' %}
 {% load url_page_tag %}
+
 {% block title %}{{page_name}}{% endblock title %}
 
 {% block content %}
@@ -41,19 +42,31 @@
                 <div class="list-products-block pb-2 mx-auto">
                     <div class="row row-cols-3">
                         {% for product in products %}
-                        <div class="card ms-2 mb-2" style="width: 19rem;">
-                            {% if product.image_url %}
-                                <img class="card-img-top" src="{{product.image_url}}" alt="Card image cap">
-                            {% else %}
-                                <img class="card-img-top" src="..." alt="Card image cap">
-                            {%endif%}
-                            <div class="card-body">
-                                <h5 class="card-title">{{product.category|title}} {{product.name}}</h5>
-                                <p class="card-text">{{product.summary}}</p>
-                                <p>Price:{{product.price}}$</p>
-                                <a href="{{ product.absolute_url }}" class="btn btn-primary">more</a>
+                            <div class="card ms-2 mb-2" style="width: 19rem;">
+                                {% csrf_token %}                                    
+                                {% if product.image_url %}
+                                    <img class="card-img-top" src="{{product.image_url}}" alt="Card image cap">
+                                {% else %}
+                                    <img class="card-img-top" src="..." alt="Card image cap">
+                                {%endif%}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{product.category|title}} {{product.name}}</h5>
+                                    <p class="card-text">{{product.summary}}</p>
+                                    <p>Price:{{product.price}}$</p>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <a href="{{ product.absolute_url }}" class="btn btn-info">more</a>
+                                        </div>
+                                        <div class="col-sm">
+                                            <form method="post" action="{% url 'add_product' %}">
+                                                {% csrf_token %}     
+                                                <input hidden="true" name="product_name" readonly="true" value="{{product.name}}">
+                                                <button type="submit" class="btn btn-primary">Add in basket</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
                         {% endfor products %}
                     </div>
                 </div>

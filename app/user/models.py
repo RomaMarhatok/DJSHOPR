@@ -19,7 +19,7 @@ class BasketProduct(models.Model):
     class Meta:
         verbose_name = "product in basket"
         verbose_name_plural = "products in baskets"
-        db_table = "produc_basket"
+        db_table = "product_basket"
 
 
 class Order(models.Model):
